@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Title | Liu Yao 刘杳</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Title" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="summary" />
+<meta property="og:description" content="summary" />
+<link rel="canonical" href="https://liuyao12.github.io/blog/2020/03/02/Convolutional-Layer-with-a-Twist.html" />
+<meta property="og:url" content="https://liuyao12.github.io/blog/2020/03/02/Convolutional-Layer-with-a-Twist.html" />
+<meta property="og:site_name" content="Liu Yao 刘杳" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-02T00:00:00-06:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-02T00:00:00-06:00","headline":"Title","description":"summary","mainEntityOfPage":{"@type":"WebPage","@id":"https://liuyao12.github.io/blog/2020/03/02/Convolutional-Layer-with-a-Twist.html"},"@type":"BlogPosting","url":"https://liuyao12.github.io/blog/2020/03/02/Convolutional-Layer-with-a-Twist.html","dateModified":"2020-03-02T00:00:00-06:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://liuyao12.github.io/blog/feed.xml" title="Liu Yao 刘杳" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Title | Liu Yao 刘杳</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Title" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="summary" />
+<meta property="og:description" content="summary" />
+<link rel="canonical" href="https://liuyao12.github.io/blog/2020/03/02/Convolutional-Layer-with-a-Twist.html" />
+<meta property="og:url" content="https://liuyao12.github.io/blog/2020/03/02/Convolutional-Layer-with-a-Twist.html" />
+<meta property="og:site_name" content="Liu Yao 刘杳" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-02T00:00:00-06:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-03-02T00:00:00-06:00","headline":"Title","description":"summary","mainEntityOfPage":{"@type":"WebPage","@id":"https://liuyao12.github.io/blog/2020/03/02/Convolutional-Layer-with-a-Twist.html"},"@type":"BlogPosting","url":"https://liuyao12.github.io/blog/2020/03/02/Convolutional-Layer-with-a-Twist.html","dateModified":"2020-03-02T00:00:00-06:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://liuyao12.github.io/blog/feed.xml" title="Liu Yao 刘杳" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    // remove paragraph tags in rendered toc (happens from notebooks)
+    var toctags = document.querySelectorAll(".toc-entry")
+    toctags.forEach(e => (e.firstElementChild.innerText = e.firstElementChild.innerText.replace('¶', '')))
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Liu Yao 刘杳</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Title</h1><p class="page-description">summary</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-02T00:00:00-06:00" itemprop="datePublished">
+        Mar 2, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+<a href="https://github.com/liuyao12/blog/tree/master/_notebooks/2020-03-02-Convolutional-Layer-with-a-Twist.ipynb" role="button">
+    <img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+</a>
+</div><div class="px-2">
+    <a href="https://colab.research.google.com/github/liuyao12/blog/blob/master/_notebooks/2020-03-02-Convolutional-Layer-with-a-Twist.ipynb">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-03-02-Convolutional-Layer-with-a-Twist.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Introducing-Convolutional-Layer-with-a-Twist">Introducing Convolutional Layer with a Twist<a class="anchor-link" href="#Introducing-Convolutional-Layer-with-a-Twist"> </a></h1><p>I'm exicted to introduce <code>conv_twist</code>, a replacement of (and an improvement on) the good old <strong>convolutional layer</strong> widely used in Deep Learning models (rightfully called ConvNets or CNN) in Computer Vision. Famously introduced by Yann LeCun some 30 years ago into image classification, it became the source of the Deep Learning/Artificial Intelligence revolution with AlexNet in 2012. Rapid improvements on the architecture followed, most importantly the ResNet of 2015. Recently attention has somewhat shifted away from image classification, but convolutional layers are still the bread and butter of any Computer Vision models. What more can be said about convolutional layers, one might ask? The answer is a little bit of mathematics.</p>
+<p>Long story short, here is the <code>conv_twist</code> in PyTorch, and you can easily swap out the 3x3 <code>Conv2d</code> in your model and plug this in, and train from scratch to see if it gives any improvement.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+
+<span class="k">class</span> <span class="nc">conv_twist</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>  <span class="c1"># replacing 3x3 Conv2d</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">init_max</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">conv_twist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv_x</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv_y</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="n">ni</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># make conv_x a &quot;first-order operator&quot; by symmetrizing it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv_y</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>                      <span class="c1"># make conv_y a 90 degree rotation of convx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_x</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">nf</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_y</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">nf</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_x</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="o">-</span><span class="n">init_max</span><span class="p">,</span> <span class="n">init_max</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center_y</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="o">-</span><span class="n">init_max</span><span class="p">,</span> <span class="n">init_max</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv_y</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv_y</span><span class="o">.</span><span class="n">weight</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv_y</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">x1</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+        <span class="n">XX</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">))[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">YY</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="o">/</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_y</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="n">XX</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv_x</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">YY</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv_y</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's take a look at the weights in such a <code>conv_twist</code> model:</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">conv_twist</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">para</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>center_x Parameter containing:
+tensor([ 0.3023, -0.3360,  0.5309,  0.4433, -1.0316], requires_grad=True)
+center_y Parameter containing:
+tensor([-1.1532,  0.8339,  1.0706, -1.0671,  0.9563], requires_grad=True)
+conv.weight Parameter containing:
+tensor([[[[ 0.0571,  0.0091,  0.1836],
+          [-0.1347,  0.1280,  0.0614],
+          [-0.1534,  0.0817, -0.0577]],
+
+         [[ 0.1923,  0.1592,  0.0034],
+          [ 0.1896, -0.1555, -0.1734],
+          [-0.0581, -0.1072, -0.1130]],
+
+         [[ 0.1653,  0.0071,  0.1774],
+          [-0.1583,  0.1580,  0.0131],
+          [-0.1118, -0.0300, -0.1756]]],
+
+
+        [[[ 0.1088, -0.1590, -0.0011],
+          [-0.1373,  0.1578,  0.1774],
+          [ 0.1487, -0.0590, -0.0774]],
+
+         [[-0.0160, -0.0466,  0.1536],
+          [ 0.1157,  0.0899, -0.0484],
+          [-0.0265,  0.0195,  0.1479]],
+
+         [[ 0.1583,  0.1361, -0.1898],
+          [ 0.0298,  0.1011, -0.0624],
+          [-0.0675, -0.0696, -0.0140]]],
+
+
+        [[[ 0.0903,  0.0801,  0.0272],
+          [-0.0263,  0.1851, -0.0386],
+          [ 0.0911,  0.0732, -0.1034]],
+
+         [[-0.1535,  0.0369,  0.1282],
+          [-0.1705, -0.1889,  0.1057],
+          [ 0.1199,  0.1284, -0.0512]],
+
+         [[-0.1427, -0.0173,  0.1785],
+          [ 0.0082,  0.0340, -0.1824],
+          [-0.1898, -0.0470, -0.1436]]],
+
+
+        [[[ 0.1071,  0.1408,  0.1279],
+          [ 0.1466, -0.0027, -0.0033],
+          [ 0.1643,  0.1307,  0.1014]],
+
+         [[-0.1919, -0.1899,  0.0276],
+          [ 0.0095,  0.0569, -0.1876],
+          [-0.0194, -0.1519,  0.0332]],
+
+         [[-0.1761,  0.1029,  0.1825],
+          [-0.1683,  0.1804,  0.0394],
+          [ 0.0053,  0.0803,  0.1801]]],
+
+
+        [[[-0.1021, -0.0830, -0.1734],
+          [ 0.1628, -0.1476,  0.1153],
+          [ 0.0586,  0.0996, -0.1892]],
+
+         [[-0.0584, -0.1846,  0.0149],
+          [ 0.1456,  0.1168, -0.0120],
+          [ 0.1599,  0.1344,  0.0357]],
+
+         [[ 0.1706,  0.1914, -0.0694],
+          [ 0.0860,  0.0887, -0.1463],
+          [-0.0224, -0.1481,  0.0727]]]], requires_grad=True)
+conv_x.weight Parameter containing:
+tensor([[[[-7.5224e-02, -1.8295e-02,  8.3235e-02],
+          [-6.9799e-02,  0.0000e+00,  6.9799e-02],
+          [-8.3235e-02,  1.8295e-02,  7.5224e-02]],
+
+         [[-2.8982e-02,  9.3284e-02,  1.1157e-02],
+          [-1.2749e-01,  0.0000e+00,  1.2749e-01],
+          [-1.1157e-02, -9.3284e-02,  2.8982e-02]],
+
+         [[-3.8338e-02, -1.2740e-02,  7.4155e-03],
+          [-3.2470e-02,  0.0000e+00,  3.2470e-02],
+          [-7.4155e-03,  1.2740e-02,  3.8338e-02]]],
+
+
+        [[[-1.2747e-01, -3.8912e-02,  2.9849e-02],
+          [-2.3069e-02,  0.0000e+00,  2.3069e-02],
+          [-2.9849e-02,  3.8912e-02,  1.2747e-01]],
+
+         [[ 1.0544e-01, -1.1224e-01,  1.3429e-01],
+          [-2.9504e-02,  0.0000e+00,  2.9504e-02],
+          [-1.3429e-01,  1.1224e-01, -1.0544e-01]],
+
+         [[-1.2774e-01, -1.5686e-04, -6.4486e-02],
+          [ 1.1217e-01,  0.0000e+00, -1.1217e-01],
+          [ 6.4486e-02,  1.5686e-04,  1.2774e-01]]],
+
+
+        [[[-2.2844e-02, -6.1838e-02,  1.3633e-01],
+          [-4.4475e-02,  0.0000e+00,  4.4475e-02],
+          [-1.3633e-01,  6.1838e-02,  2.2844e-02]],
+
+         [[-9.4597e-03, -1.4843e-02, -5.2345e-02],
+          [-9.7515e-02,  0.0000e+00,  9.7515e-02],
+          [ 5.2345e-02,  1.4843e-02,  9.4597e-03]],
+
+         [[ 9.6781e-02, -7.2473e-02, -4.2748e-02],
+          [-4.4189e-02,  0.0000e+00,  4.4189e-02],
+          [ 4.2748e-02,  7.2473e-02, -9.6781e-02]]],
+
+
+        [[[ 5.2418e-02, -1.1462e-01,  1.1140e-01],
+          [-5.5214e-02,  0.0000e+00,  5.5214e-02],
+          [-1.1140e-01,  1.1462e-01, -5.2418e-02]],
+
+         [[ 1.6125e-01,  6.7214e-02, -1.5112e-02],
+          [-2.8123e-02,  0.0000e+00,  2.8123e-02],
+          [ 1.5112e-02, -6.7214e-02, -1.6125e-01]],
+
+         [[ 3.7767e-02, -5.2222e-02,  1.2324e-01],
+          [ 5.3436e-02,  0.0000e+00, -5.3436e-02],
+          [-1.2324e-01,  5.2222e-02, -3.7767e-02]]],
+
+
+        [[[ 1.3408e-01, -2.7979e-02,  3.5268e-02],
+          [ 1.1753e-01,  0.0000e+00, -1.1753e-01],
+          [-3.5268e-02,  2.7979e-02, -1.3408e-01]],
+
+         [[-1.2700e-01,  7.2318e-02,  4.9036e-03],
+          [ 2.9414e-02,  0.0000e+00, -2.9414e-02],
+          [-4.9036e-03, -7.2318e-02,  1.2700e-01]],
+
+         [[ 1.9118e-02,  5.3294e-02, -3.2968e-02],
+          [ 3.5216e-02,  0.0000e+00, -3.5216e-02],
+          [ 3.2968e-02, -5.3294e-02, -1.9118e-02]]]], requires_grad=True)
+conv_y.weight Parameter containing:
+tensor([[[[-8.3235e-02, -6.9799e-02, -7.5224e-02],
+          [ 1.8295e-02,  0.0000e+00, -1.8295e-02],
+          [ 7.5224e-02,  6.9799e-02,  8.3235e-02]],
+
+         [[-1.1157e-02, -1.2749e-01, -2.8982e-02],
+          [-9.3284e-02,  0.0000e+00,  9.3284e-02],
+          [ 2.8982e-02,  1.2749e-01,  1.1157e-02]],
+
+         [[-7.4155e-03, -3.2470e-02, -3.8338e-02],
+          [ 1.2740e-02,  0.0000e+00, -1.2740e-02],
+          [ 3.8338e-02,  3.2470e-02,  7.4155e-03]]],
+
+
+        [[[-2.9849e-02, -2.3069e-02, -1.2747e-01],
+          [ 3.8912e-02,  0.0000e+00, -3.8912e-02],
+          [ 1.2747e-01,  2.3069e-02,  2.9849e-02]],
+
+         [[-1.3429e-01, -2.9504e-02,  1.0544e-01],
+          [ 1.1224e-01,  0.0000e+00, -1.1224e-01],
+          [-1.0544e-01,  2.9504e-02,  1.3429e-01]],
+
+         [[ 6.4486e-02,  1.1217e-01, -1.2774e-01],
+          [ 1.5686e-04,  0.0000e+00, -1.5686e-04],
+          [ 1.2774e-01, -1.1217e-01, -6.4486e-02]]],
+
+
+        [[[-1.3633e-01, -4.4475e-02, -2.2844e-02],
+          [ 6.1838e-02,  0.0000e+00, -6.1838e-02],
+          [ 2.2844e-02,  4.4475e-02,  1.3633e-01]],
+
+         [[ 5.2345e-02, -9.7515e-02, -9.4597e-03],
+          [ 1.4843e-02,  0.0000e+00, -1.4843e-02],
+          [ 9.4597e-03,  9.7515e-02, -5.2345e-02]],
+
+         [[ 4.2748e-02, -4.4189e-02,  9.6781e-02],
+          [ 7.2473e-02,  0.0000e+00, -7.2473e-02],
+          [-9.6781e-02,  4.4189e-02, -4.2748e-02]]],
+
+
+        [[[-1.1140e-01, -5.5214e-02,  5.2418e-02],
+          [ 1.1462e-01,  0.0000e+00, -1.1462e-01],
+          [-5.2418e-02,  5.5214e-02,  1.1140e-01]],
+
+         [[ 1.5112e-02, -2.8123e-02,  1.6125e-01],
+          [-6.7214e-02,  0.0000e+00,  6.7214e-02],
+          [-1.6125e-01,  2.8123e-02, -1.5112e-02]],
+
+         [[-1.2324e-01,  5.3436e-02,  3.7767e-02],
+          [ 5.2222e-02,  0.0000e+00, -5.2222e-02],
+          [-3.7767e-02, -5.3436e-02,  1.2324e-01]]],
+
+
+        [[[-3.5268e-02,  1.1753e-01,  1.3408e-01],
+          [ 2.7979e-02,  0.0000e+00, -2.7979e-02],
+          [-1.3408e-01, -1.1753e-01,  3.5268e-02]],
+
+         [[-4.9036e-03,  2.9414e-02, -1.2700e-01],
+          [-7.2318e-02,  0.0000e+00,  7.2318e-02],
+          [ 1.2700e-01, -2.9414e-02,  4.9036e-03]],
+
+         [[ 3.2968e-02,  3.5216e-02,  1.9118e-02],
+          [-5.3294e-02,  0.0000e+00,  5.3294e-02],
+          [-1.9118e-02, -3.5216e-02, -3.2968e-02]]]], requires_grad=True)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you take a look at the <code>conv_x</code> weights, you'd notice that each 3x3 kernel is symmetric (the numbers on the opposite ends are identical except for the signs, with the middle one always 0). That's what I mean by "symmetrizing" <code>conv_x</code>. You can also check that the <code>conv_x</code> and <code>conv_y</code> weights are identical but off by a 90 degree rotation.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">conv_y</span><span class="o">.</span><span class="n">weight</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(tensor([[-0.0752, -0.0183,  0.0832],
+         [-0.0698,  0.0000,  0.0698],
+         [-0.0832,  0.0183,  0.0752]], grad_fn=&lt;SelectBackward&gt;),
+ tensor([[-0.0832, -0.0698, -0.0752],
+         [ 0.0183,  0.0000, -0.0183],
+         [ 0.0752,  0.0698,  0.0832]], grad_fn=&lt;SelectBackward&gt;))</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Why do I choose to initialize the weights this way? Well, I'll try to explain it later. But for now it's important to note that <code>conv_twist</code> is a lot bigger than the standard <code>Conv2d</code> layer, but not as much as it appears to be. This particular implementation, if I had done it properly, has about twice as many trainable weights as a single <code>Conv2d</code> layer.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="What-are-convolutions?">What are convolutions?<a class="anchor-link" href="#What-are-convolutions?"> </a></h2><p>The standard story in Neural Networks is that the convolution operator captures the spatial relation of the pixels, so is particularly suited for image-related learning task, and has much fewer weights, than a generic linear map (fully connected layer). And the consensus has come down to using only 3x3 convolutions, and go deeper (i.e., many layers), hence <em>deep</em> learning.</p>
+<p>What is perhaps not well-known is that different 3x3 kernels have very intuitive meanings, in terms of what it does to the image. For example, the Gaussian kernel in image processing "blurs" the image. We can do a little experiment to see:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/blog/2020/03/02/Convolutional-Layer-with-a-Twist.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>An easy to use blogging platform with support for Jupyter Notebooks.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/liuyao12" title="liuyao12"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/liuyao12" title="liuyao12"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
