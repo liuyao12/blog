@@ -110,7 +110,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      8 min read
+      7 min read
     
 </span></p>
 
@@ -443,9 +443,9 @@ tensor([[-0.0100,  0.0000,  0.0100],
 <blockquote>
 <p>the operators <code>A</code> and <code>B</code> <em>generate</em> translations in the <em>x</em>- and <em>y</em>-directions.</p>
 </blockquote>
-<p>That is to say, once a neural network has learned to do a certain task, we can look at each of its 3x3 kernels and say it is doing a combination of (tiny bits of) blurring, translations, and possibly other transformations. Keeping aside the activation function, with succesive convolutional layers, an image could "meander" through the network and shift by not-so-small a distance. By the way, this "wholistic" view has the advantage that one can "picture" the entire CNN with the same standard picture of a neural net of nodes and edges: each node is now a whole image (or feature map), and each edge is a convolution operator. [insert image]
-What is missing from such a convolution operator is <strong>rotation</strong> and <strong>scaling</strong>, as it is well known that CNNs are not rotation/scale-invariant, inasmuch as it is translation-invariant. There have been attempts at making a neural network invariant or <em>equivariant</em> for rotation and scaling, but to my limited understanding they are rather more like "forced" fixes than modifying the convolutional layer itself. For people with the right kinds of mathematics background, it would come immediately to mind the solution: the <strong>(infinitesimal) generators</strong> for rotation and scaling, or <strong>flow</strong> of a vector field, or solving a first-order linear partial differential equation by the <strong>method of characteristics</strong>. It appears that such people are disjoint from the Deep Learning community, or at least they have not been able to convince the Deep Learning community of their worth.</p>
-<p>Let me first show how the <code>conv_twist</code> works before we get back to explain the mathematics, as simply as I could. Only then will we explain the details of the code.</p>
+<p>That means, once a neural network has learned to do a certain task, we can look at each of its 3x3 kernels and say it is doing a combination of (tiny bits of) blurring, translations, and possibly other transformations. That's what convolution <em>does</em> to the whole image. By the way, this "wholistic" point of view has the advantage that one can now "picture" the entire CNN with the same standard picture of a neural net of nodes and edges: each node is now a whole image (or feature map), and each edge is a convolution operator. (to insert image)
+What is missing from such a convolutional operator is <strong>rotation</strong> and <strong>scaling</strong>, as it is well known that CNNs are not rotation/scale-invariant, inasmuch as it is translation-invariant. There have been attempts at making a neural network invariant or <em>equivariant</em> for rotation and scaling, but to my limited understanding they are rather more like "forced" fixes than modifying the convolutional layer itself. For people with the right kind of mathematics backgrounds, the solution may come immediately to mind: the <strong>(infinitesimal) generators</strong> for rotation and scaling, or <strong>flow</strong> of a <strong>vector field</strong>, or solving a first-order linear partial differential equation by the <strong>method of characteristics</strong>.</p>
+<p>Let me first show how the <code>conv_twist</code> works before we get back to explain the mathematics, as simply as I could (not assuming any of the bold words above). Only then will we explain the details of the code.</p>
 
 </div>
 </div>
