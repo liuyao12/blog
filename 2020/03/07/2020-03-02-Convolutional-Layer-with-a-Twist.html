@@ -17,6 +17,12 @@
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>I'm excited to introduce <code>conv_twist</code>, a replacement of — and, I argue, an improvement on — the good old <strong>convolutional layer</strong> widely used in Deep Learning models (rightfully referred to as ConvNets or CNNs) in Computer Vision. Famously introduced by Yann LeCun some 30 years ago into image classification, it became the source of the Deep Learning/Artificial Intelligence revolution with AlexNet in 2012. Rapid improvements on the architecture followed, most notably the ResNet of 2015. Recently attention has somewhat shifted away from image classification, but convolutional layers are still the bread and butter of any Computer Vision models. What more can be said about convolutional layers, one might ask? The answer is a little bit of mathematics.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="PyTorch-implementation">PyTorch implementation<a class="anchor-link" href="#PyTorch-implementation"> </a></h2><p>Long story short, here is one implementation of <code>conv_twist</code> in PyTorch, and you can easily swap out the 3x3 <code>Conv2d</code> in your model and plug this in, and train <em>from scratch</em> to see if it gives any improvement. Early success has been shown on <a href="https://github.com/fastai/imagenette">Imagenette/Imagewoof</a> benchmark. (Help with testing on other models/datasets are greatly appreciated.)</p>
 
 </div>
