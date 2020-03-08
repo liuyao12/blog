@@ -258,45 +258,45 @@ window.onload = wrap_img;
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>center_x Parameter containing:
-tensor([-0.8633], requires_grad=True)
+tensor([-0.9889], requires_grad=True)
 center_y Parameter containing:
-tensor([1.1431], requires_grad=True)
+tensor([-0.5144], requires_grad=True)
 conv.weight Parameter containing:
-tensor([[[[ 0.0830,  0.1450, -0.0116],
-          [ 0.1657, -0.1794,  0.1653],
-          [ 0.1217,  0.1590, -0.0620]],
+tensor([[[[-0.0658, -0.1493, -0.1498],
+          [ 0.0353,  0.1013, -0.1897],
+          [ 0.1453,  0.1893, -0.1636]],
 
-         [[ 0.0883,  0.1074, -0.0663],
-          [ 0.1082,  0.1242, -0.0371],
-          [ 0.0084,  0.0205,  0.0395]],
+         [[ 0.0300,  0.0398, -0.0695],
+          [-0.1037,  0.1563, -0.0226],
+          [ 0.1470, -0.0228,  0.0569]],
 
-         [[ 0.0224,  0.0602, -0.1701],
-          [-0.1788,  0.0392, -0.0250],
-          [ 0.0341, -0.1826, -0.0382]]]], requires_grad=True)
+         [[-0.0256, -0.0558,  0.1638],
+          [ 0.1893,  0.0224, -0.1219],
+          [-0.0206,  0.0279, -0.0009]]]], requires_grad=True)
 conv_x.weight Parameter containing:
-tensor([[[[ 0.0823,  0.1325, -0.1523],
-          [-0.0405,  0.0000,  0.0405],
-          [ 0.1523, -0.1325, -0.0823]],
+tensor([[[[ 0.0360,  0.0318,  0.0244],
+          [ 0.1365,  0.0000, -0.1365],
+          [-0.0244, -0.0318, -0.0360]],
 
-         [[ 0.0196, -0.0206,  0.1129],
-          [ 0.1279,  0.0000, -0.1279],
-          [-0.1129,  0.0206, -0.0196]],
+         [[-0.0307,  0.0668,  0.0539],
+          [-0.0114,  0.0000,  0.0114],
+          [-0.0539, -0.0668,  0.0307]],
 
-         [[ 0.0052,  0.0336,  0.1212],
-          [ 0.0508,  0.0000, -0.0508],
-          [-0.1212, -0.0336, -0.0052]]]], requires_grad=True)
+         [[ 0.0277, -0.0204,  0.0102],
+          [ 0.1714,  0.0000, -0.1714],
+          [-0.0102,  0.0204, -0.0277]]]], requires_grad=True)
 conv_y.weight Parameter containing:
-tensor([[[[ 0.1523, -0.0405,  0.0823],
-          [-0.1325,  0.0000,  0.1325],
-          [-0.0823,  0.0405, -0.1523]],
+tensor([[[[-0.0244,  0.1365,  0.0360],
+          [-0.0318,  0.0000,  0.0318],
+          [-0.0360, -0.1365,  0.0244]],
 
-         [[-0.1129,  0.1279,  0.0196],
-          [ 0.0206,  0.0000, -0.0206],
-          [-0.0196, -0.1279,  0.1129]],
+         [[-0.0539, -0.0114, -0.0307],
+          [-0.0668,  0.0000,  0.0668],
+          [ 0.0307,  0.0114,  0.0539]],
 
-         [[-0.1212,  0.0508,  0.0052],
-          [-0.0336,  0.0000,  0.0336],
-          [-0.0052, -0.0508,  0.1212]]]], requires_grad=True)
+         [[-0.0102,  0.1714,  0.0277],
+          [ 0.0204,  0.0000, -0.0204],
+          [-0.0277, -0.1714,  0.0102]]]], requires_grad=True)
 </pre>
 </div>
 </div>
@@ -431,7 +431,7 @@ tensor([[-0.0100,  0.0000,  0.0100],
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Do you see the image gets shifted in the <em>x</em>- or <em>y</em>-direction? What does it all mean? Without defining terms, one would like to say that</p>
 <blockquote>
-<p>the operators <code>A</code> and <code>B</code> <em>generate</em> translations in the <em>x</em>- and <em>y</em>-directions.</p>
+<p>the operators <code>A</code> and <code>B</code> <strong>generate</strong> translations in the <em>x</em>- and <em>y</em>-directions.</p>
 </blockquote>
 <p>That means, once a neural network has learned to do a certain task, we can look at each of its 3x3 kernels and say it is doing a combination of (tiny bits of) blurring, translations, and possibly other transformations. That's what convolution <em>does</em> to the whole image. By the way, this "wholistic" point of view has the advantage that one can now "picture" the entire CNN with the same standard picture of a neural net of nodes and edges: each node is now a whole image (or feature map), and each edge is a convolution operator. (insert image)</p>
 
@@ -453,7 +453,7 @@ tensor([[-0.0100,  0.0000,  0.0100],
 <h2 id="conv_twist-at-work-(no-training)">
 <a class="anchor" href="#conv_twist-at-work-(no-training)" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>conv_twist</code> at work (no training)<a class="anchor-link" href="#conv_twist-at-work-(no-training)"> </a>
 </h2>
-<p>In addition to a normal Conv2d layer, the <code>conv_twist</code> is feeding the input to two other 3x3 Conv2d layer. To see the effect, let's turn off the <code>conv</code> weights</p>
+<p>In addition to a standard Conv2d layer, the <code>conv_twist</code> is feeding the input to two other 3x3 Conv2d layer. To see the effect, let's turn off the <code>conv</code> weights</p>
 
 </div>
 </div>
@@ -469,10 +469,12 @@ tensor([[-0.0100,  0.0000,  0.0100],
 <span class="n">model</span><span class="o">.</span><span class="n">conv</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">I</span>
 <span class="n">model</span><span class="o">.</span><span class="n">center_x</span><span class="o">.</span><span class="n">data</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">model</span><span class="o">.</span><span class="n">center_y</span><span class="o">.</span><span class="n">data</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">model</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">A</span>
-<span class="n">model</span><span class="o">.</span><span class="n">conv_y</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">B</span>
+<span class="n">model</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">A</span>  <span class="c1"># or -B</span>
+<span class="n">model</span><span class="o">.</span><span class="n">conv_y</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">B</span>  <span class="c1"># or A</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    
+<span class="c1"># take a grayscale image, and feed it into the conv model. Display the result as an image side-by-side the original.</span>
 </pre></div>
 
     </div>
