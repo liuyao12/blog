@@ -147,7 +147,6 @@ window.onload = wrap_img;
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
 <li class="toc-entry toc-h2"><a href="#Introducing...">Introducing... </a></li>
-<li class="toc-entry toc-h2"><a href="#PyTorch-implementation">PyTorch implementation </a></li>
 <li class="toc-entry toc-h2"><a href="#What-do-convolutions-actually-do?">What do convolutions actually do? </a></li>
 <li class="toc-entry toc-h2"><a href="#conv_twist-at-work-(no-training)">conv_twist at work (no training) </a></li>
 <li class="toc-entry toc-h2"><a href="#The-mathematics">The mathematics </a></li>
@@ -182,9 +181,6 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="PyTorch-implementation">
-<a class="anchor" href="#PyTorch-implementation" aria-hidden="true"><span class="octicon octicon-link"></span></a>PyTorch implementation<a class="anchor-link" href="#PyTorch-implementation"> </a>
-</h2>
 <p>Without further ado, here is one (crude) implementation of <code>conv_twist</code> in PyTorch, and you can easily swap out the 3x3 <code>Conv2d</code> in your model and plug this in, and train <em>from scratch</em> to see if it gives any improvement. Early success has been shown on <a href="https://github.com/fastai/imagenette">Imagenette/Imagewoof</a> benchmark. (Help with testing on other models/datasets are greatly appreciated.)</p>
 
 </div>
@@ -247,8 +243,8 @@ window.onload = wrap_img;
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">conv_twist</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">para</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -262,51 +258,51 @@ window.onload = wrap_img;
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>center_x Parameter containing:
-tensor([ 0.6307, -1.4049, -0.1047], requires_grad=True)
+tensor([ 0.2477,  0.9534, -0.1108], requires_grad=True)
 center_y Parameter containing:
-tensor([-0.1879,  0.6662,  1.1414], requires_grad=True)
+tensor([0.5686, 0.3137, 1.3260], requires_grad=True)
 conv.weight Parameter containing:
-tensor([[[[-0.2893, -0.0233, -0.2600],
-          [ 0.2398, -0.1335,  0.0162],
-          [ 0.1423, -0.0215,  0.1642]]],
+tensor([[[[-0.2313,  0.2921,  0.3207],
+          [-0.2141, -0.1275,  0.0908],
+          [-0.2542, -0.1965, -0.1046]]],
 
 
-        [[[-0.1147, -0.0316, -0.0759],
-          [ 0.2738, -0.2315,  0.1012],
-          [ 0.0793,  0.3118,  0.0178]]],
+        [[[-0.0218, -0.1945,  0.2844],
+          [ 0.2249,  0.2451, -0.0126],
+          [-0.1551,  0.2886, -0.1796]]],
 
 
-        [[[ 0.1192,  0.2551,  0.3169],
-          [-0.0515,  0.1144, -0.0921],
-          [-0.1128, -0.1987, -0.0691]]]], requires_grad=True)
+        [[[-0.0858,  0.3155,  0.1492],
+          [ 0.3070, -0.2038, -0.1751],
+          [-0.0306,  0.2427, -0.2228]]]], requires_grad=True)
 conv_x.weight Parameter containing:
-tensor([[[[-0.0199, -0.2608, -0.1219],
-          [-0.0325,  0.0000,  0.0325],
-          [ 0.1219,  0.2608,  0.0199]]],
+tensor([[[[ 0.0819,  0.0686, -0.0483],
+          [ 0.1132,  0.0000, -0.1132],
+          [ 0.0483, -0.0686, -0.0819]]],
 
 
-        [[[ 0.2378,  0.0571, -0.1488],
-          [-0.1910,  0.0000,  0.1910],
-          [ 0.1488, -0.0571, -0.2378]]],
+        [[[-0.0114, -0.0117, -0.2456],
+          [-0.1804,  0.0000,  0.1804],
+          [ 0.2456,  0.0117,  0.0114]]],
 
 
-        [[[-0.1464, -0.0639,  0.0475],
-          [ 0.1355,  0.0000, -0.1355],
-          [-0.0475,  0.0639,  0.1464]]]], requires_grad=True)
+        [[[ 0.0676,  0.1089,  0.1282],
+          [ 0.2408,  0.0000, -0.2408],
+          [-0.1282, -0.1089, -0.0676]]]], requires_grad=True)
 conv_y.weight Parameter containing:
-tensor([[[[ 0.1219, -0.0325, -0.0199],
-          [ 0.2608,  0.0000, -0.2608],
-          [ 0.0199,  0.0325, -0.1219]]],
+tensor([[[[ 0.0483,  0.1132,  0.0819],
+          [-0.0686,  0.0000,  0.0686],
+          [-0.0819, -0.1132, -0.0483]]],
 
 
-        [[[ 0.1488, -0.1910,  0.2378],
-          [-0.0571,  0.0000,  0.0571],
-          [-0.2378,  0.1910, -0.1488]]],
+        [[[ 0.2456, -0.1804, -0.0114],
+          [ 0.0117,  0.0000, -0.0117],
+          [ 0.0114,  0.1804, -0.2456]]],
 
 
-        [[[-0.0475,  0.1355, -0.1464],
-          [ 0.0639,  0.0000, -0.0639],
-          [ 0.1464, -0.1355,  0.0475]]]], requires_grad=True)
+        [[[-0.1282,  0.2408,  0.0676],
+          [-0.1089,  0.0000,  0.1089],
+          [-0.0676, -0.2408,  0.1282]]]], requires_grad=True)
 </pre>
 </div>
 </div>
@@ -443,9 +439,16 @@ tensor([[-0.0100,  0.0000,  0.0100],
 <blockquote>
 <p>the operators <code>A</code> and <code>B</code> <em>generate</em> translations in the <em>x</em>- and <em>y</em>-directions.</p>
 </blockquote>
-<p>That means, once a neural network has learned to do a certain task, we can look at each of its 3x3 kernels and say it is doing a combination of (tiny bits of) blurring, translations, and possibly other transformations. That's what convolution <em>does</em> to the whole image. By the way, this "wholistic" point of view has the advantage that one can now "picture" the entire CNN with the same standard picture of a neural net of nodes and edges: each node is now a whole image (or feature map), and each edge is a convolution operator. (to insert image.)
-What is missing from such a convolutional operator is <strong>rotation</strong> and <strong>scaling</strong>, as it is well known that CNNs are not rotation/scale-invariant, inasmuch as it is translation-invariant. There have been attempts at making a neural network invariant or <em>equivariant</em> for rotation and scaling, but to my limited understanding they are rather more like "forced" fixes than modifying the convolutional layer itself. For people with the right kind of mathematical backgrounds, the solution may come immediately to mind: the <strong>(infinitesimal) generators</strong> for rotation and scaling (<strong>Lie algebra</strong> of a <strong>Lie group</strong>), or <strong>flow</strong> of a <strong>vector field</strong>, or solving a first-order linear partial differential equation by the <strong>method of characteristics</strong>.</p>
-<p>Let me first show how the <code>conv_twist</code> works before we get back to explain the mathematics, as simply as I could (not assuming any of the bold words above). Only then will we explain the details of the code.</p>
+<p>That means, once a neural network has learned to do a certain task, we can look at each of its 3x3 kernels and say it is doing a combination of (tiny bits of) blurring, translations, and possibly other transformations. That's what convolution <em>does</em> to the whole image. By the way, this "wholistic" point of view has the advantage that one can now "picture" the entire CNN with the same standard picture of a neural net of nodes and edges: each node is now a whole image (or feature map), and each edge is a convolution operator. (insert image)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What is missing from such a convolutional operator is <strong>rotation</strong> and <strong>scaling</strong>, as it is well known that CNNs are not rotation/scale-invariant, inasmuch as it is translation-invariant. There have been attempts at making a neural network invariant or <em>equivariant</em> for rotation and scaling, but to my limited understanding they are rather more like "forced" fixes than modifying the convolutional layer itself. For people with the right kind of mathematical backgrounds, the solution may come immediately to mind: the <strong>(infinitesimal) generators</strong> for rotation and scaling (<strong>Lie algebra</strong> of a <strong>Lie group</strong>), or <strong>flow</strong> of a <strong>vector field</strong>, or solving a first-order linear partial differential equation by the <strong>method of characteristics</strong>.</p>
+<p>Let me first show how the <code>conv_twist</code> works before we get back to explain the mathematics, as simply as I could (not using any of the jargon words above). Only then will we explain the details of the code.</p>
 
 </div>
 </div>
@@ -469,11 +472,11 @@ What is missing from such a convolutional operator is <strong>rotation</strong> 
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">conv_twist</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">conv</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">model</span><span class="o">.</span><span class="n">conv</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">I</span>
 <span class="n">model</span><span class="o">.</span><span class="n">center_x</span><span class="o">.</span><span class="n">data</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">model</span><span class="o">.</span><span class="n">center_y</span><span class="o">.</span><span class="n">data</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">model</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">I</span> <span class="o">+</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">A</span>
-<span class="n">model</span><span class="o">.</span><span class="n">conv_y</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">I</span> <span class="o">+</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">B</span>
+<span class="n">model</span><span class="o">.</span><span class="n">conv_x</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">A</span>
+<span class="n">model</span><span class="o">.</span><span class="n">conv_y</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">B</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
 </pre></div>
@@ -493,16 +496,16 @@ tensor([0.], requires_grad=True)
 center_y Parameter containing:
 tensor([0.], requires_grad=True)
 conv.weight Parameter containing:
-tensor([[[[0., 0., 0.],
-          [0., 0., 0.],
-          [0., 0., 0.]]]], requires_grad=True)
+tensor([[0., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 0.]], requires_grad=True)
 conv_x.weight Parameter containing:
 tensor([[-0.0100,  0.0000,  0.0100],
-        [-0.0200,  1.0000,  0.0200],
+        [-0.0200,  0.0000,  0.0200],
         [-0.0100,  0.0000,  0.0100]], requires_grad=True)
 conv_y.weight Parameter containing:
 tensor([[ 0.0100,  0.0200,  0.0100],
-        [ 0.0000,  1.0000,  0.0000],
+        [ 0.0000,  0.0000,  0.0000],
         [-0.0100, -0.0200, -0.0100]], requires_grad=True)
 </pre>
 </div>
