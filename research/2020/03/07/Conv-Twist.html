@@ -6,31 +6,33 @@
 <title>Convolutional Layer with a Twist | Liu Yao 刘杳</title>
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="Convolutional Layer with a Twist" />
+<meta name="author" content="Liu Yao 刘杳" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Modification of Conv2d that has a “built-in” capacity of learning to rotate/dilate the image. Easy plug-in for any CNN model." />
 <meta property="og:description" content="Modification of Conv2d that has a “built-in” capacity of learning to rotate/dilate the image. Easy plug-in for any CNN model." />
-<link rel="canonical" href="https://liuyao12.github.io/blog/math/code/vision/2020/03/07/Conv-Twist.html" />
-<meta property="og:url" content="https://liuyao12.github.io/blog/math/code/vision/2020/03/07/Conv-Twist.html" />
+<link rel="canonical" href="https://liuyao12.github.io/blog/research/2020/03/07/Conv-Twist.html" />
+<meta property="og:url" content="https://liuyao12.github.io/blog/research/2020/03/07/Conv-Twist.html" />
 <meta property="og:site_name" content="Liu Yao 刘杳" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-03-07T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Modification of Conv2d that has a “built-in” capacity of learning to rotate/dilate the image. Easy plug-in for any CNN model.","headline":"Convolutional Layer with a Twist","@type":"BlogPosting","dateModified":"2020-03-07T00:00:00-06:00","datePublished":"2020-03-07T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://liuyao12.github.io/blog/math/code/vision/2020/03/07/Conv-Twist.html"},"url":"https://liuyao12.github.io/blog/math/code/vision/2020/03/07/Conv-Twist.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Liu Yao 刘杳"},"description":"Modification of Conv2d that has a “built-in” capacity of learning to rotate/dilate the image. Easy plug-in for any CNN model.","headline":"Convolutional Layer with a Twist","@type":"BlogPosting","dateModified":"2020-03-07T00:00:00-06:00","datePublished":"2020-03-07T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://liuyao12.github.io/blog/research/2020/03/07/Conv-Twist.html"},"url":"https://liuyao12.github.io/blog/research/2020/03/07/Conv-Twist.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://liuyao12.github.io/blog/feed.xml" title="Liu Yao 刘杳" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Convolutional Layer with a Twist | Liu Yao 刘杳</title>
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="Convolutional Layer with a Twist" />
+<meta name="author" content="Liu Yao 刘杳" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Modification of Conv2d that has a “built-in” capacity of learning to rotate/dilate the image. Easy plug-in for any CNN model." />
 <meta property="og:description" content="Modification of Conv2d that has a “built-in” capacity of learning to rotate/dilate the image. Easy plug-in for any CNN model." />
-<link rel="canonical" href="https://liuyao12.github.io/blog/math/code/vision/2020/03/07/Conv-Twist.html" />
-<meta property="og:url" content="https://liuyao12.github.io/blog/math/code/vision/2020/03/07/Conv-Twist.html" />
+<link rel="canonical" href="https://liuyao12.github.io/blog/research/2020/03/07/Conv-Twist.html" />
+<meta property="og:url" content="https://liuyao12.github.io/blog/research/2020/03/07/Conv-Twist.html" />
 <meta property="og:site_name" content="Liu Yao 刘杳" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-03-07T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Modification of Conv2d that has a “built-in” capacity of learning to rotate/dilate the image. Easy plug-in for any CNN model.","headline":"Convolutional Layer with a Twist","@type":"BlogPosting","dateModified":"2020-03-07T00:00:00-06:00","datePublished":"2020-03-07T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://liuyao12.github.io/blog/math/code/vision/2020/03/07/Conv-Twist.html"},"url":"https://liuyao12.github.io/blog/math/code/vision/2020/03/07/Conv-Twist.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Liu Yao 刘杳"},"description":"Modification of Conv2d that has a “built-in” capacity of learning to rotate/dilate the image. Easy plug-in for any CNN model.","headline":"Convolutional Layer with a Twist","@type":"BlogPosting","dateModified":"2020-03-07T00:00:00-06:00","datePublished":"2020-03-07T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://liuyao12.github.io/blog/research/2020/03/07/Conv-Twist.html"},"url":"https://liuyao12.github.io/blog/research/2020/03/07/Conv-Twist.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -106,7 +108,9 @@ window.onload = wrap_img;
   <header class="post-header">
     <h1 class="post-title p-name" itemprop="name headline">Convolutional Layer with a Twist</h1><p class="page-description">Modification of Conv2d that has a &quot;built-in&quot; capacity of learning to rotate/dilate the image. Easy plug-in for any CNN model.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-03-07T00:00:00-06:00" itemprop="datePublished">
         Mar 7, 2020
-      </time>
+      </time>• 
+          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <span class="p-author h-card" itemprop="name">Liu Yao 刘杳</span></span>
        • <span class="read-time" title="Estimated read time">
     
     
@@ -117,13 +121,7 @@ window.onload = wrap_img;
     
       <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
       
-        <a class="category-tags-link" href="/blog/categories/#math">math</a>
-        &nbsp;
-      
-        <a class="category-tags-link" href="/blog/categories/#code">code</a>
-        &nbsp;
-      
-        <a class="category-tags-link" href="/blog/categories/#vision">vision</a>
+        <a class="category-tags-link" href="/blog/categories/#research">research</a>
         
       
       </p>
@@ -149,7 +147,7 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h2"><a href="#Introducing...">Introducing... </a></li>
 <li class="toc-entry toc-h2"><a href="#What-do-convolutions-actually-do?">What do convolutions actually do? </a></li>
 <li class="toc-entry toc-h2"><a href="#conv_twist-at-work-(no-training)">conv_twist at work (no training) </a></li>
-<li class="toc-entry toc-h2"><a href="#The-mathematics">The mathematics </a></li>
+<li class="toc-entry toc-h2"><a href="#The-math-behind-all-this">The math behind all this </a></li>
 </ul><!--
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
@@ -434,7 +432,7 @@ tensor([[-0.0100,  0.0000,  0.0100],
 <blockquote>
 <p>the operators <code>A</code> and <code>B</code> <strong>generate</strong> translations in the <em>x</em>- and <em>y</em>-directions.</p>
 </blockquote>
-<p>That means, once a neural network has learned to do a certain task, we can look at each of its 3x3 kernels and say it is doing a combination of (tiny bits of) blurring, translations, and possibly other transformations. That's what convolution <em>does</em> to the whole image. By the way, this "wholistic" point of view has the advantage that one can now "picture" the entire CNN with the same standard picture of a neural net of nodes and edges: each node is now a whole image (or feature map), and each edge is a convolution operator. (insert image)</p>
+<p>You can also check for yourself that <code>A+B</code> generates translation in the 45 degree direction. Similarly, you can "mix up" translation with blurring. In fact, <em>any</em> 3x3 convolution is a combination of (tiny bits of) blurring, translations, and possibly other transformations. That's what convolution <em>does</em> to the whole image. By the way, this "wholistic" point of view has the advantage that one can now "picture" the entire CNN with the same standard picture of a neural net of nodes and edges: each node is now a whole image (or feature map), and each edge is a convolution operator. (insert image)</p>
 
 </div>
 </div>
@@ -517,10 +515,10 @@ tensor([[ 0.0100,  0.0200,  0.0100],
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="The-mathematics">
-<a class="anchor" href="#The-mathematics" aria-hidden="true"><span class="octicon octicon-link"></span></a>The mathematics<a class="anchor-link" href="#The-mathematics"> </a>
+<h2 id="The-math-behind-all-this">
+<a class="anchor" href="#The-math-behind-all-this" aria-hidden="true"><span class="octicon octicon-link"></span></a>The math behind all this<a class="anchor-link" href="#The-math-behind-all-this"> </a>
 </h2>
-<p>There are various ways that one could discuss this pheonomenon. But the first step is invariably to think of the image <em>not</em> as a collection of <strong>discrete</strong> data (pixels) but as a <strong>continuous</strong> object (function of two variables), and the pixels are "samples" of the function that give a good approximation for computations that we want to perform on the function.</p>
+<p>There are various ways that one could discuss the pheonomenon of a "local operator", when applied many times, yields a global transformation. But the first step is invariably to think of the image <em>not</em> as a collection of <strong>discrete</strong> data (pixels) but as a <strong>continuous</strong> object (function of two variables), and the pixels are "samples" of the function that give a good approximation for computations that we want to perform on the function.</p>
 <p>For functions of continuous variables, the first thing you might want to do is taking (partial) derivatives in the x- or y-direction. How would you approximate that if you don't have full information of the function, but only the samples at discrete points?</p>
 
 </div>
@@ -534,7 +532,8 @@ tensor([[ 0.0100,  0.0200,  0.0100],
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">))[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">))[</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -546,15 +545,17 @@ tensor([[ 0.0100,  0.0200,  0.0100],
 
 <div class="output_area">
 
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>array([[[0, 0, 0, 0, 0],
-        [1, 1, 1, 1, 1],
-        [2, 2, 2, 2, 2],
-        [3, 3, 3, 3, 3]]])</pre>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[[0 0 0 0 0]
+  [1 1 1 1 1]
+  [2 2 2 2 2]
+  [3 3 3 3 3]]]
+[[[0 1 2 3 4]
+  [0 1 2 3 4]
+  [0 1 2 3 4]
+  [0 1 2 3 4]]]
+</pre>
 </div>
-
 </div>
 
 </div>
@@ -575,7 +576,7 @@ tensor([[ 0.0100,  0.0200,  0.0100],
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/blog/math/code/vision/2020/03/07/Conv-Twist.html" hidden></a>
+</script><a class="u-url" href="/blog/research/2020/03/07/Conv-Twist.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
