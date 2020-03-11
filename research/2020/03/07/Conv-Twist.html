@@ -192,7 +192,10 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">PIL</span>
+<span class="n">PIL</span><span class="o">.</span><span class="n">PILLOW_VERSION</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">__version__</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">torchvision</span>
 
@@ -257,45 +260,45 @@ window.onload = wrap_img;
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>center_x Parameter containing:
-tensor([-0.9889], requires_grad=True)
+tensor([0.5226], requires_grad=True)
 center_y Parameter containing:
-tensor([-0.5144], requires_grad=True)
+tensor([0.5464], requires_grad=True)
 conv.weight Parameter containing:
-tensor([[[[-0.0658, -0.1493, -0.1498],
-          [ 0.0353,  0.1013, -0.1897],
-          [ 0.1453,  0.1893, -0.1636]],
+tensor([[[[-0.0298, -0.0940,  0.1901],
+          [-0.1259,  0.1577,  0.0541],
+          [ 0.0786, -0.0098, -0.0743]],
 
-         [[ 0.0300,  0.0398, -0.0695],
-          [-0.1037,  0.1563, -0.0226],
-          [ 0.1470, -0.0228,  0.0569]],
+         [[ 0.0559,  0.0047,  0.0455],
+          [ 0.0163,  0.1859,  0.0017],
+          [ 0.1650, -0.1146, -0.0215]],
 
-         [[-0.0256, -0.0558,  0.1638],
-          [ 0.1893,  0.0224, -0.1219],
-          [-0.0206,  0.0279, -0.0009]]]], requires_grad=True)
+         [[ 0.0070,  0.0852,  0.0348],
+          [ 0.1815,  0.0406,  0.0865],
+          [ 0.1346, -0.0909,  0.1083]]]], requires_grad=True)
 conv_x.weight Parameter containing:
-tensor([[[[ 0.0360,  0.0318,  0.0244],
-          [ 0.1365,  0.0000, -0.1365],
-          [-0.0244, -0.0318, -0.0360]],
+tensor([[[[ 0.0591,  0.0362,  0.1139],
+          [-0.1468,  0.0000,  0.1468],
+          [-0.1139, -0.0362, -0.0591]],
 
-         [[-0.0307,  0.0668,  0.0539],
-          [-0.0114,  0.0000,  0.0114],
-          [-0.0539, -0.0668,  0.0307]],
+         [[ 0.0501, -0.0121, -0.0393],
+          [-0.0586,  0.0000,  0.0586],
+          [ 0.0393,  0.0121, -0.0501]],
 
-         [[ 0.0277, -0.0204,  0.0102],
-          [ 0.1714,  0.0000, -0.1714],
-          [-0.0102,  0.0204, -0.0277]]]], requires_grad=True)
+         [[ 0.1027,  0.1131,  0.0566],
+          [ 0.1376,  0.0000, -0.1376],
+          [-0.0566, -0.1131, -0.1027]]]], requires_grad=True)
 conv_y.weight Parameter containing:
-tensor([[[[-0.0244,  0.1365,  0.0360],
-          [-0.0318,  0.0000,  0.0318],
-          [-0.0360, -0.1365,  0.0244]],
+tensor([[[[-0.1139, -0.1468,  0.0591],
+          [-0.0362,  0.0000,  0.0362],
+          [-0.0591,  0.1468,  0.1139]],
 
-         [[-0.0539, -0.0114, -0.0307],
-          [-0.0668,  0.0000,  0.0668],
-          [ 0.0307,  0.0114,  0.0539]],
+         [[ 0.0393, -0.0586,  0.0501],
+          [ 0.0121,  0.0000, -0.0121],
+          [-0.0501,  0.0586, -0.0393]],
 
-         [[-0.0102,  0.1714,  0.0277],
-          [ 0.0204,  0.0000, -0.0204],
-          [-0.0277, -0.1714,  0.0102]]]], requires_grad=True)
+         [[-0.0566,  0.1376,  0.1027],
+          [-0.1131,  0.0000,  0.1131],
+          [-0.1027, -0.1376,  0.0566]]]], requires_grad=True)
 </pre>
 </div>
 </div>
@@ -318,7 +321,7 @@ tensor([[[[-0.0244,  0.1365,  0.0360],
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Why do I choose to initialize the weights this way, and what are <code>XX</code> and <code>YY</code>? Well, I'll try to explain everything later. For now it's important to note that <code>conv_twist</code> is a lot bigger than the standard <code>Conv2d</code> layer, but not as much as it appears to be. This particular implementation, if I had done it properly, has about twice as many trainable weights as a simple <code>Conv2d</code> layer.</p>
-<p>Let's first revisit the good old convolutions.</p>
+<p>Let's first revisit convolution.</p>
 
 </div>
 </div>
@@ -329,7 +332,7 @@ tensor([[[[-0.0244,  0.1365,  0.0360],
 <h2 id="What-do-convolutions-actually-do?">
 <a class="anchor" href="#What-do-convolutions-actually-do?" aria-hidden="true"><span class="octicon octicon-link"></span></a>What do convolutions actually do?<a class="anchor-link" href="#What-do-convolutions-actually-do?"> </a>
 </h2>
-<p>It is by now common knowledge that the convolution operator captures the spatial relation of the pixels (local features), so is particularly suited for image-related learning task. Moreover, it uses much fewer weights than a generic linear map (fully connected layer). And the classic storyline goes like this: the first layer would learn about the line pattern, and the next one how those lines come together; the deeper you go, the "higher-level structure" the convolutions learn to capture. It is also common knowledge that this is just heuristics, and should not be taken too literally. Over the years, we have learned that it's better to do away with kernels that are larger than 3x3 (and do away with any biases), and to go deeper instead.</p>
+<p>It is by now common knowledge that the convolution operator captures the spatial relation of the pixels (local features), so is particularly suited for image-related learning task. Moreover, it uses much fewer weights than a generic linear map (fully connected layer). The classic storyline goes like this: the first layer would learn about the line pattern, the next one how those lines come together; the deeper you go, the "higher-level structure" the convolutions learn to capture. It is also common knowledge that this is just heuristics, and should not be taken too literally. In addition, over the years we have learned that it's better to do away with kernels that are larger than 3x3 (and do away with any biases), and to go deeper (insert more layers) instead.</p>
 <p>What is perhaps not well-known is that different 3x3 kernels have rather intuitive meanings, in terms of what it does to the image <em>overall</em>. For example, the Gaussian kernel in image processing "blurs" the image. We can do a little experiment to see:</p>
 
 </div>
@@ -394,7 +397,7 @@ tensor([[0.0625, 0.1250, 0.0625],
 <span class="n">B</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 <span class="c1"># These are the Sobel operator for (traditional) edge detection</span>
 <span class="n">I</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
-<span class="n">K</span> <span class="o">=</span> <span class="n">I</span> <span class="o">+</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">A</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">I</span> <span class="o">+</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">A</span>  <span class="c1"># or B</span>
 <span class="n">conv</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">K</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">conv</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
@@ -533,8 +536,8 @@ tensor([[ 0.0100,  0.0200,  0.0100],
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">))[</span><span class="mi">1</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">))[</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">))[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">indices</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">))[</span><span class="mi">2</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -547,14 +550,18 @@ tensor([[ 0.0100,  0.0200,  0.0100],
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[[[0 0 0 0 0]
-  [1 1 1 1 1]
-  [2 2 2 2 2]
-  [3 3 3 3 3]]]
-[[[0 1 2 3 4]
-  [0 1 2 3 4]
-  [0 1 2 3 4]
-  [0 1 2 3 4]]]
+<pre>[[[0 0 0 0 0 0 0 0]
+  [1 1 1 1 1 1 1 1]
+  [2 2 2 2 2 2 2 2]
+  [3 3 3 3 3 3 3 3]
+  [4 4 4 4 4 4 4 4]
+  [5 5 5 5 5 5 5 5]]]
+[[[0 1 2 3 4 5 6 7]
+  [0 1 2 3 4 5 6 7]
+  [0 1 2 3 4 5 6 7]
+  [0 1 2 3 4 5 6 7]
+  [0 1 2 3 4 5 6 7]
+  [0 1 2 3 4 5 6 7]]]
 </pre>
 </div>
 </div>
