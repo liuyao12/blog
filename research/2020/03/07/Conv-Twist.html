@@ -317,7 +317,7 @@ tensor([[[[-0.0340,  0.0548, -0.1302],
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Why do I choose to initialize the weights this way, and what are <code>XX</code> and <code>YY</code>? Well, I'll try to explain everything later. For now it's important to note that <code>conv_twist</code> is a lot bigger than the standard <code>Conv2d</code> layer, but not as much as it appears to be. This particular implementation, if I had done it properly, has about twice as many trainable weights as a simple <code>Conv2d</code> layer.</p>
+<p>Why do I choose to initialize the weights this way, and what are <code>XX</code> and <code>YY</code>? Well, I'll try to explain everything later. For now it's important to note that <code>conv_twist</code> is a lot bigger than the standard <code>Conv2d</code> layer, but not as much as it appears to be. This particular implementation, if I had done it properly, has about twice as many trainable weights as a single <code>Conv2d</code> layer.</p>
 <p>Let's first revisit (classical) convolution.</p>
 
 </div>
@@ -448,8 +448,7 @@ tensor([[[[0.0625, 0.1250, 0.0625],
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">conv</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
     
-<span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">mono</span><span class="p">)</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">mono</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">):</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">mono</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
@@ -516,7 +515,7 @@ tensor([[[[-0.0100,  0.0000,  0.0100],
 <h2 id="conv_twist-at-work-(no-training)">
 <a class="anchor" href="#conv_twist-at-work-(no-training)" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>conv_twist</code> at work (no training)<a class="anchor-link" href="#conv_twist-at-work-(no-training)"> </a>
 </h2>
-<p>In addition to a standard Conv2d layer, the <code>conv_twist</code> is feeding the input to two other 3x3 Conv2d layer. To see the effect, let's turn off the <code>conv</code> weights</p>
+<p>In addition to a standard Conv2d layer <code>conv</code>, the <code>conv_twist</code> is feeding the input to two other 3x3 Conv2d layers, <code>conv_x</code> and <code>conv_y</code>. Let's see what they do:</p>
 
 </div>
 </div>
@@ -537,8 +536,7 @@ tensor([[[[-0.0100,  0.0000,  0.0100],
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
     
-<span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">mono</span><span class="p">)</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">mono</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">):</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">mono</span><span class="p">,</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
