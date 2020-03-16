@@ -580,7 +580,7 @@ tensor([[[[-0.0100,  0.0000,  0.0100],
 </h2>
 <p>There are various ways that one could discuss the pheonomenon that a "local operator", when applied many times, yields a global transformation. But the first step is invariably to think of the image <em>not</em> as a collection of <strong>discrete</strong> data (pixels) but as a <strong>continuous</strong> object (function of two continuous variables), and the pixels are "samples" of the function that give a good approximation for whatever computations we want to perform on the function.</p>
 <p>For functions of continuous variables, the first thing you might want to do is taking (partial) derivatives in the <em>x</em>- or <em>y</em>-direction. How would you approximate that if you don't have full information of the function, but only the samples at discrete points?</p>
-
+$$ \frac{\partial f}{\partial x}(a,b)=\lim_{h\to 0}\frac{f(a+h,b)-f(a,b)}{h}$$
 </div>
 </div>
 </div>
