@@ -22,6 +22,8 @@ group :jekyll_plugins do
   gem 'jekyll-seo-tag'
   gem 'jekyll-toc'
   gem 'jekyll-gist'
+  gem 'jekyll-paginate'
+  gem 'jekyll-sitemap'
 end
 
 gem "kramdown-math-katex"
