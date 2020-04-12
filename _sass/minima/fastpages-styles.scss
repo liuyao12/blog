@@ -232,8 +232,8 @@ table {
 }
 
 // Wrap text outputs instead of horizontal scroll
-//.output_text.output_execute_result {
-//  pre{
-//    white-space: pre-wrap;
-//  }
-//}
+.output_text.output_execute_result {
+  pre{
+    white-space: nowrap;
+  }
+}
