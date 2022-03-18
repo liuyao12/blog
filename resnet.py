@@ -125,22 +125,19 @@ class Bottleneck(nn.Module):
         norm_layer: Optional[Callable[..., nn.Module]] = None,
     ) -> None:
         super().__init__()
-        self.twist_on = True
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         width = int(planes * (base_width / 64.0)) * groups
         # Both self.conv2 and self.downsample layers downsample the input when stride != 1
         self.conv1 = conv1x1(inplanes, width)
         self.bn1 = norm_layer(width)
-        if self.twist_on:
-            self.conv2 = conv3x3(width, width * 4, stride, width, dilation)
-            self.bn2 = norm_layer(width * 4)
-            self.XY = None
-            self.conv3 = conv1x1(width * 4, planes * self.expansion)
-        else:
-            self.conv2 = conv3x3(width, width, stride, groups, dilation)
-            self.bn2 = norm_layer(width)
-            self.conv3 = conv1x1(width, planes * self.expansion)
+#         self.conv2 = conv3x3(width, width, stride, groups, dilation)    # This is the original
+#         self.bn2 = norm_layer(width)                                    # This is the original
+#         self.conv3 = conv1x1(width, planes * self.expansion)            # This is the original
+        self.conv2 = conv3x3(width, width * 4, stride, width, dilation)   # Modified
+        self.bn2 = norm_layer(width * 4)                                  # Modified
+        self.XY = None                                                    # Modified
+        self.conv3 = conv1x1(width * 4, planes * self.expansion)          # Modified
         self.bn3 = norm_layer(planes * self.expansion)
         self.relu = nn.ReLU(inplace=True)
         self.downsample = downsample
@@ -155,16 +152,14 @@ class Bottleneck(nn.Module):
 
         out = self.conv2(out)
         out = self.bn2(out)
-        if self.twist_on:
-            if self.XY is None or self.XY.size()[3] != out.size()[3]:
-                N, C, H, W = out.size()
-                XX = torch.from_numpy(np.indices((1, 1, H, W))[3] * 2 / W - 1)
-                YY = torch.from_numpy(np.indices((1, 1, H, W))[2] * 2 / H - 1)
-                ones = torch.from_numpy(np.ones((1, 1, H, W)))
-                XY = torch.cat([XX, YY] + [ones] * 2, dim=1)
-                self.XY = torch.cat([XY] * (C // 4), dim=1).type(out.dtype).to(out.device)
-                print("(re)initialize self.XY", self.XY.size(), out.size())
-            out = out * self.XY
+        if self.XY is None or self.XY.size()[2] != out.size()[2]:                        # Added
+            N, C, H, W = out.size()                                                      # Added
+            XX = torch.from_numpy(np.indices((1, 1, H, W))[3] * 2 / W - 1)               # Added
+            YY = torch.from_numpy(np.indices((1, 1, H, W))[2] * 2 / H - 1)               # Added
+            ones = torch.from_numpy(np.ones((1, 1, H, W)))                               # Added
+            XY = torch.cat([XX, YY] + [ones] * 2, dim=1)                                 # Added
+            self.XY = torch.cat([XY] * (C // 4), dim=1).type(out.dtype).to(out.device)   # Added
+        out = out * self.XY                                                              # Added
         out = self.relu(out)
 
         out = self.conv3(out)
