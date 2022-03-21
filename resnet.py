@@ -137,6 +137,7 @@ class Bottleneck(nn.Module):
         self.conv2 = conv3x3(width, width * 4, stride, width, dilation)   # Modified
         self.bn2 = norm_layer(width * 4)                                  # Modified
         self.XY = None                                                    # Modified
+        self.conv = conv1x1(6, width * 4)                                 # Modified
         self.conv3 = conv1x1(width * 4, planes * self.expansion)          # Modified
         self.bn3 = norm_layer(planes * self.expansion)
         self.relu = nn.ReLU(inplace=True)
@@ -157,9 +158,9 @@ class Bottleneck(nn.Module):
             XX = torch.from_numpy(np.indices((1, 1, H, W))[3] * 2 / W - 1)               # Added
             YY = torch.from_numpy(np.indices((1, 1, H, W))[2] * 2 / H - 1)               # Added
             ones = torch.from_numpy(np.ones((1, 1, H, W)))                               # Added
-            XY = torch.cat([XX, YY] + [ones] * 2, dim=1)                                 # Added
-            self.XY = torch.cat([XY] * (C // 4), dim=1).type(out.dtype).to(out.device)   # Added
-        out = out * self.XY                                                              # Added
+            self.XY = torch.cat([ones, XX, YY, XX*XX, XX*YY, YY*YY],
+                                dim=1).type(out.dtype).to(out.device)                    # Added
+        out = out * self.conv(self.XY)                                                   # Added
         out = self.relu(out)
 
         out = self.conv3(out)
