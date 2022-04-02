@@ -131,13 +131,13 @@ class Bottleneck(nn.Module):
         # Both self.conv2 and self.downsample layers downsample the input when stride != 1
         self.conv1 = conv1x1(inplanes, width)
         self.bn1 = norm_layer(width)
-#         self.conv2 = conv3x3(width, width, stride, groups, dilation)    # This is the original
-#         self.bn2 = norm_layer(width)                                    # This is the original
-#         self.conv3 = conv1x1(width, planes * self.expansion)            # This is the original
+        # self.conv2 = conv3x3(width, width, stride, groups, dilation)    # This is the original
+        # self.bn2 = norm_layer(width)                                    # This is the original
+        # self.conv3 = conv1x1(width, planes * self.expansion)            # This is the original
         self.conv2 = conv3x3(width, width * 4, stride, width, dilation)   # Modified
         self.bn2 = norm_layer(width * 4)                                  # Modified
         self.XY = None                                                    # Modified
-        self.conv = conv1x1(6, width * 4)                                 # Modified
+        self.mix = conv1x1(6, width * 4)                                  # Modified
         self.conv3 = conv1x1(width * 4, planes * self.expansion)          # Modified
         self.bn3 = norm_layer(planes * self.expansion)
         self.relu = nn.ReLU(inplace=True)
@@ -152,7 +152,6 @@ class Bottleneck(nn.Module):
         out = self.relu(out)
 
         out = self.conv2(out)
-        out = self.bn2(out)
         if self.XY is None or self.XY.size()[2] != out.size()[2]:                        # Added
             N, C, H, W = out.size()                                                      # Added
             XX = torch.from_numpy(np.indices((1, 1, H, W))[3] * 2 / W - 1)               # Added
@@ -160,7 +159,8 @@ class Bottleneck(nn.Module):
             ones = torch.from_numpy(np.ones((1, 1, H, W)))                               # Added
             self.XY = torch.cat([ones, XX, YY, XX*XX, XX*YY, YY*YY],
                                 dim=1).type(out.dtype).to(out.device)                    # Added
-        out = out * self.conv(self.XY)                                                   # Added
+        out = out * self.mix(self.XY)                                                    # Added
+        out = self.bn2(out)
         out = self.relu(out)
 
         out = self.conv3(out)
